@@ -45,6 +45,8 @@ namespace ProjetoVet
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
             SqlConnection con2 = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\gonxa\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
 
+            con2.Close();
+
             con2.Open();
             SqlCommand cmd = new SqlCommand("insert into Animais values (@Id,@nome,@dataNasc,@dataUltiConsu,@tipo,@raca,@sexo,@peso,@dono_contacto)", con2);
             cmd.Parameters.AddWithValue("@Id", int.Parse(idTxt.Text));
@@ -69,7 +71,7 @@ namespace ProjetoVet
         private void button3_Click_1(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
-
+            con2.Close();
             con2.Open();
             SqlCommand cmd = new SqlCommand("Update Animais set nome= @nome, dataNasc= @dataNasc, tipo= @tipo, raca= @raca, sexo= @sexo, peso= @peso, dono_contacto= @dono_contacto where Id = @Id", con2);
 
@@ -96,6 +98,7 @@ namespace ProjetoVet
         private void button2_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
 
             con2.Open();
             SqlCommand cmd = new SqlCommand("Delete Animais where Id = @Id", con2);
@@ -198,6 +201,7 @@ namespace ProjetoVet
         private void button3_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
 
             con2.Open();
             SqlCommand cmd = new SqlCommand("Update Animais set nome= @nome, dataNasc= @dataNasc, tipo= @tipo, raca= @raca, sexo= @sexo, peso= @peso, dono_contacot= @dono_contacto where Id = @Id", con2);
@@ -225,9 +229,12 @@ namespace ProjetoVet
 
         //Medicos
 
+        
+
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
-            if (!System.Text.RegularExpressions.Regex.IsMatch(textBox2.Text, "^[a-zA-Z ]"))
+ 
+            if (!System.Text.RegularExpressions.Regex.IsMatch(textBox2.Text, "^[a-zA-Z]") && textBox2.Text != "")
             {
                 SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
                 {
@@ -245,16 +252,61 @@ namespace ProjetoVet
 
                 dataGridView2.DataSource = dt;
             }
+            else if (textBox2.Text == "")
+            {
+                SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+                {
+                    if (con2.State == ConnectionState.Closed)
+                        con2.Open();
+                }
+                SqlCommand cmd1 = new SqlCommand("select * from Medicos ", con2);
+
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                DataTable dt = new DataTable();
+                da.SelectCommand = cmd1;
+                dt.Clear();
+                da.Fill(dt);
+
+                dataGridView2.DataSource = dt;
+            }
             else
             {
                 MessageBox.Show("So Ids");
-                textBox1.Text.Remove(textBox1.Text.Length - 1);
+                //textBox1.Text.Remove(textBox1.Text.Length - 1);
             }
+
+            //if (!System.Text.RegularExpressions.Regex.IsMatch(textBox2.Text, "^[a-zA-Z ]"))
+            //{
+            //    SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            //    {
+            //        if (con2.State == ConnectionState.Closed)
+            //            con2.Open();
+            //    }
+            //    SqlCommand cmd1 = new SqlCommand("select * from Medicos where Id like '%" + textBox2.Text + "%'", con2);
+            //    cmd1.Parameters.AddWithValue("@Id", int.Parse(textBox2.Text));
+
+            //    SqlDataAdapter da = new SqlDataAdapter();
+            //    DataTable dt = new DataTable();
+            //    da.SelectCommand = cmd1;
+            //    dt.Clear();
+            //    da.Fill(dt);
+
+            //    dataGridView2.DataSource = dt;
+            //}
+            //else
+            //{
+            //    MessageBox.Show("So Ids");
+            //    textBox1.Text.Remove(textBox1.Text.Length - 1);
+            //}
         }
 
         private void apagarbtn_Click(object sender, EventArgs e)
         {
+
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
+
             con2.Open();
             SqlCommand cmd = new SqlCommand("Delete Medicos where Id = @Id", con2);
             cmd.Parameters.AddWithValue("@Id", int.Parse(textBox7.Text));
@@ -268,6 +320,8 @@ namespace ProjetoVet
         {
 
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
+
             con2.Open();
             SqlCommand cmd = new SqlCommand("insert into Medicos values (@Id,@nome,@contacto)", con2);
             cmd.Parameters.AddWithValue("@Id", int.Parse(textBox7.Text));
@@ -282,6 +336,8 @@ namespace ProjetoVet
         private void atualizarbtn_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
+
             con2.Open();
             SqlCommand cmd = new SqlCommand("Update Medicos set nome= @nome,contacto= @contacto  where Id = @Id", con2);
 
@@ -301,6 +357,7 @@ namespace ProjetoVet
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
             {
                 if (con.State == ConnectionState.Closed)
+                    con2.Close();
                     con2.Open();
             }
             SqlCommand cmd1 = new SqlCommand("select * from Medicos ", con2);
@@ -315,6 +372,7 @@ namespace ProjetoVet
             dataGridView2.DataSource = dt;
 
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -423,6 +481,8 @@ namespace ProjetoVet
             //comboBoxIdAnimal.Items.Add(dt);
         }
 
+        #region Cosultas 
+
         /// <summary>
         /// Inserir consulta
         /// </summary>
@@ -431,6 +491,7 @@ namespace ProjetoVet
         private void insbtn_Click(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
+            con2.Close();
             con2.Open();
 
             //string sqlAnimal = "SELECT Id FROM Animais Where nome ";
@@ -473,6 +534,8 @@ namespace ProjetoVet
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
 
+            con2.Close();
+
             con2.Open();
             SqlCommand cmd = new SqlCommand("Update Consultas set Id= @Id, Animais_Id= @Animais_Id, Medicos_Id= @Medicos_Id, Descrição= @Descrição, Hora= @Hora, Tipo= @Tipo, diagnostico= @diagnostico, prescricao= @prescricao, ProximaData= @ProximaData)", con2);
 
@@ -499,7 +562,7 @@ namespace ProjetoVet
         private void apgbtn_Click_1(object sender, EventArgs e)
         {
             SqlConnection con = new SqlConnection(" Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = C:\\Users\\pedro\\source\\repos\\ProjetoVet\\ProjetoVet\\DBAnimais.mdf; Integrated Security = True\r\n");
-
+            con2.Close();
             con2.Open();
             SqlCommand cmd = new SqlCommand("Delete Consultas where Id = @Id", con2);
             cmd.Parameters.AddWithValue("@Id", int.Parse(textBoxIdConsulta.Text));
@@ -533,6 +596,8 @@ namespace ProjetoVet
             dataGridView3.DataSource = dt;
 
         }
+
+        #endregion
     }
 }
 
